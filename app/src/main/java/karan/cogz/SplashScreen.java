@@ -1,6 +1,7 @@
 package karan.cogz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.renderscript.RenderScript;
@@ -40,6 +41,9 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onError(ANError error) {
                         // failure
+                        Intent fail=new Intent("karan.cogz.LoginPage");
+                        startActivity(fail);
+
                     }
                 });
 
