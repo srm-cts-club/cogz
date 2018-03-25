@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -29,6 +31,9 @@ public class SignUp extends AppCompatActivity {
     SharedPreferences.Editor editor;
     Context context;
     Boolean isMentor = false;
+    Button signup;
+    CheckBox select_mentor;
+    EditText admin_key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +46,39 @@ public class SignUp extends AppCompatActivity {
         password = (EditText) findViewById(R.id.editText_password);
         login = (Button) findViewById(R.id.button_login);
         //adminlogin = (Button) findViewById(R.id.button_loginadmin);
+        signup = (Button) findViewById(R.id.button_login);
+        select_mentor = (CheckBox) findViewById(R.id.checkBox);
+        admin_key = (EditText) findViewById(R.id.adminKey);
+        sign_up();
+        mentor_select();
         register = (TextView) findViewById(R.id.text_register);
         // login();
         signup();
+    }
+    public void sign_up() {
+        signup.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }
+        );
+    }
+
+    public void mentor_select()
+    {
+        select_mentor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    admin_key.setVisibility(View.VISIBLE);
+                }
+                else{
+                    admin_key.setVisibility(View.GONE);
+                }
+            }
+        });
     }
     public void signup(){
         try {
