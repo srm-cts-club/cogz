@@ -21,14 +21,15 @@ public class SplashScreen extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         context = this;
-        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-                AndroidNetworking.initialize(getApplicationContext());
-                AndroidNetworking.get("https://auth."+getString(R.string.cluster_name)+".hasura-app.io/v1/user/info")
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AndroidNetworking.initialize(getApplicationContext());
+        AndroidNetworking.get("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/user/info")
                 .addHeaders(getRequestHeader())
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -36,26 +37,28 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // success
-                        Intent fail=new Intent("karan.cogz.LoginPage");
+                        Intent fail = new Intent("karan.cogz.LoginPage");// for trial
                         startActivity(fail);
 
                     }
+
                     @Override
                     public void onError(ANError error) {
                         // failure
 
-                        Intent success=new Intent("karan.cogz.SignUp");
+                        Intent success = new Intent("karan.cogz.SignUp"); //for trial
                         startActivity(success);
 
                     }
                 });
 
     }
-    public static HashMap<String,String> getRequestHeader(){
-        HashMap<String,String> headParams = new HashMap<>();
+
+    public static HashMap<String, String> getRequestHeader() {
+        HashMap<String, String> headParams = new HashMap<>();
         headParams.put("Content-Type", "application/json");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        headParams.put("Authorization","Bearer "+sharedPreferences.getString("token",""));
+        headParams.put("Authorization", "Bearer " + sharedPreferences.getString("token", ""));
         return headParams;
     }
 }

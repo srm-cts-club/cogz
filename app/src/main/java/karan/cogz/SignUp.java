@@ -34,6 +34,7 @@ public class SignUp extends AppCompatActivity {
     Button signup;
     CheckBox select_mentor;
     EditText admin_key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +45,9 @@ public class SignUp extends AppCompatActivity {
         AndroidNetworking.initialize(getApplicationContext());
         username = (EditText) findViewById(R.id.editText_username);
         password = (EditText) findViewById(R.id.editText_password);
-        login = (Button) findViewById(R.id.button_login);
+        //login = (Button) findViewById(R.id.button_login);
         //adminlogin = (Button) findViewById(R.id.button_loginadmin);
-        signup = (Button) findViewById(R.id.button_login);
+        signup = (Button) findViewById(R.id.button_sign_up);
         select_mentor = (CheckBox) findViewById(R.id.checkBox);
         admin_key = (EditText) findViewById(R.id.adminKey);
         sign_up();
@@ -55,6 +56,7 @@ public class SignUp extends AppCompatActivity {
         // login();
         sign_up();
     }
+
     public void sign_up() {
         signup.setOnClickListener(
                 new View.OnClickListener() {
@@ -80,11 +82,10 @@ public class SignUp extends AppCompatActivity {
                                                 editor.putString("username", response.getString("username"));
                                                 editor.putInt("hasura_id", response.getInt("hasura_id"));
                                                 editor.putString("acc_type", "student");
-                                                if(!isMentor) {
+                                                if (!isMentor) {
                                                     // todo: update other data
                                                     // todo: redirect to chat screen
-                                                }
-                                                else{
+                                                } else {
                                                     //todo: perform acc upgrade request
                                                     // todo: update other data
                                                     // todo: redirect to chat screen
@@ -104,8 +105,7 @@ public class SignUp extends AppCompatActivity {
                                             // handle error
                                         }
                                     });
-                        }
-                        catch(JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -113,27 +113,25 @@ public class SignUp extends AppCompatActivity {
         );
     }
 
-    public void mentor_select()
-    {
+    public void mentor_select() {
         select_mentor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     admin_key.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     admin_key.setVisibility(View.GONE);
                 }
             }
         });
     }
-    public void login()
-    {
+
+    public void login() {
         register.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i=new Intent(context,LoginPage.class);
+                        Intent i = new Intent(context, LoginPage.class);
                         startActivity(i);
                     }
                 }

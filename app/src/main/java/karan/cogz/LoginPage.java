@@ -27,6 +27,7 @@ public class LoginPage extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,8 @@ public class LoginPage extends AppCompatActivity {
         // login();
         signup();
     }
-    public void login(){
+
+    public void login() {
         try {
             JSONObject jsonObject = new JSONObject();
             JSONObject data = new JSONObject();
@@ -80,18 +82,17 @@ public class LoginPage extends AppCompatActivity {
                             // handle error
                         }
                     });
-        }
-        catch(JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-    public void signup()
-    {
+
+    public void signup() {
         register.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i=new Intent("karan.SignUp");
+                        Intent i = new Intent("karan.SignUp");
                         startActivity(i);
                     }
                 }
