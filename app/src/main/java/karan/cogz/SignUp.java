@@ -53,14 +53,61 @@ public class SignUp extends AppCompatActivity {
         mentor_select();
         register = (TextView) findViewById(R.id.text_register);
         // login();
-        signup();
+        sign_up();
     }
     public void sign_up() {
         signup.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            JSONObject data = new JSONObject();
+                            data.put("username", username.getText().toString());
+                            data.put("password", password.getText().toString());
+                            jsonObject.put("provider", "username");
+                            jsonObject.put("data", data);
+                            AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/signup")
+                                    .addJSONObjectBody(jsonObject)
+                                    .setPriority(Priority.MEDIUM)
+                                    .build()
+                                    .getAsJSONObject(new JSONObjectRequestListener() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            // do anything with response
+                                            try {
+                                                editor.putString("token", response.getString("auth_token"));
+                                                editor.putString("username", response.getString("username"));
+                                                editor.putInt("hasura_id", response.getInt("hasura_id"));
+                                                editor.putString("acc_type", "student");
+                                                if(!isMentor) {
+                                                    // todo: update other data
+                                                    // todo: redirect to chat screen
+                                                }
+                                                else{
+                                                    //todo: perform acc upgrade request
+                                                    // todo: update other data
+                                                    // todo: redirect to chat screen
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
 
+                                        @Override
+                                        public void onError(ANError error) {
+                                            int errCode = error.getErrorCode();
+                                            if (errCode == 400) {
+                                                //most likely username already exist, check error body to confirm
+                                            }
+
+                                            // handle error
+                                        }
+                                    });
+                        }
+                        catch(JSONException e){
+                            e.printStackTrace();
+                        }
                     }
                 }
         );
@@ -79,56 +126,6 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         });
-    }
-    public void signup(){
-        try {
-            JSONObject jsonObject = new JSONObject();
-            JSONObject data = new JSONObject();
-            data.put("username", username.getText().toString());
-            data.put("password", password.getText().toString());
-            jsonObject.put("provider", "username");
-            jsonObject.put("data", data);
-            AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/signup")
-                    .addJSONObjectBody(jsonObject)
-                    .setPriority(Priority.MEDIUM)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // do anything with response
-                            try {
-                                editor.putString("token", response.getString("auth_token"));
-                                editor.putString("username", response.getString("username"));
-                                editor.putInt("hasura_id", response.getInt("hasura_id"));
-                                editor.putString("acc_type", "student");
-                                if(!isMentor) {
-                                    // todo: update other data
-                                    // todo: redirect to chat screen
-                                }
-                                else{
-                                    //todo: perform acc upgrade request
-                                    // todo: update other data
-                                    // todo: redirect to chat screen
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
-                            int errCode = error.getErrorCode();
-                            if (errCode == 400) {
-                                //most likely username already exist, check error body to confirm
-                            }
-
-                            // handle error
-                        }
-                    });
-        }
-        catch(JSONException e){
-            e.printStackTrace();
-        }
     }
     public void login()
     {
