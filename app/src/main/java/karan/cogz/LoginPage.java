@@ -86,11 +86,10 @@ public class LoginPage extends AppCompatActivity {
                             if (errCode == 400) {
                                 try {
                                     JSONObject errorbody = new JSONObject(error.getErrorBody());
-                                    if(errorbody.getString("message").equals("Invalid credentials")){
+                                    if (errorbody.getString("message").equals("Invalid credentials")) {
                                         err_msg.setText("Incorrect credentials");
                                         err_msg.setVisibility(View.VISIBLE);
-                                    }
-                                    else{
+                                    } else {
                                         err_msg.setText("Unable to login, Please try again");
                                         err_msg.setVisibility(View.VISIBLE);
                                     }
@@ -102,8 +101,7 @@ public class LoginPage extends AppCompatActivity {
                                 }
 
                                 //most likely username already exist, check error body to confirm
-                            }
-                            else{
+                            } else {
                                 err_msg.setText("Unable to login, Please try again");
                                 err_msg.setVisibility(View.VISIBLE);
                             }
@@ -116,27 +114,23 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void setViewOnclickListeners() {
-        try {
-            register.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent i = new Intent(context,SignUp.class);
-                            startActivity(i);
-                        }
-                    }
-            );
-            login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    login();
-                }
-            });
-        }
-        catch(Exception e)
-        {
-            Toast.makeText(this, ""+e , Toast.LENGTH_SHORT).show();
-        }
 
+        register.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, SignUp.class);
+                        startActivity(i);
+                    }
+                }
+        );
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
     }
+
+
 }
