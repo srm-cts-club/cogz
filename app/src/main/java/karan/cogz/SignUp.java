@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -42,6 +43,7 @@ public class SignUp extends AppCompatActivity {
     AutoCompleteTextView textViewDomain;
     TextView errormsg;
     EditText name;
+    ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +66,18 @@ public class SignUp extends AppCompatActivity {
         textViewDomain = findViewById(R.id.autoComplete_domain);
         errormsg = findViewById(R.id.error_msg);
         name = findViewById(R.id.name);
+        pb = findViewById(R.id.progressBar2);
         setViewOnclickListeners();
     }
 
     public void sign_up() {
         try {
             errormsg.setVisibility(View.GONE);
+            signup.setVisibility(View.GONE);
+            pb.setIndeterminate(true);
+            pb.setVisibility(View.VISIBLE);
             // todo: validate data - password length, all fields filled?
             // todo: delete account if signup failed
-            // todo: progressbar
-            // todo: fix signup even with wrong mentor_key
             JSONObject jsonObject = new JSONObject();
             errormsg.setVisibility(View.GONE);
             JSONObject data = new JSONObject();
@@ -107,6 +111,9 @@ public class SignUp extends AppCompatActivity {
 
                         @Override
                         public void onError(ANError error) {
+                            pb.setVisibility(View.GONE);
+                            pb.setIndeterminate(false);
+                            signup.setVisibility(View.VISIBLE);
                             int errCode = error.getErrorCode();
                             if (errCode == 400) {
                                 JSONObject errBody = null;
@@ -201,6 +208,10 @@ public class SignUp extends AppCompatActivity {
 
                         @Override
                         public void onError(ANError error) {
+
+                            pb.setVisibility(View.GONE);
+                            pb.setIndeterminate(false);
+                            signup.setVisibility(View.VISIBLE);
                             int errCode = error.getErrorCode();
                             if (errCode == 401) {
                                 errormsg.setText("Unauthorised mentor key !");
@@ -253,6 +264,9 @@ public class SignUp extends AppCompatActivity {
 
                         @Override
                         public void onError(ANError error) {
+                            pb.setVisibility(View.GONE);
+                            pb.setIndeterminate(false);
+                            signup.setVisibility(View.VISIBLE);
                                 errormsg.setText("Couldn't sign up, Please try again");
                                 errormsg.setVisibility(View.VISIBLE);
                             // handle error
@@ -296,6 +310,10 @@ public class SignUp extends AppCompatActivity {
 
                         @Override
                         public void onError(ANError error) {
+
+                            pb.setVisibility(View.GONE);
+                            pb.setIndeterminate(false);
+                            signup.setVisibility(View.VISIBLE);
                             int errCode = error.getErrorCode();
                             Log.d("Signup - updateother","Error code = "+errCode+ " Error details = "+error.getErrorBody());
                             if (errCode == 400) {
@@ -315,7 +333,7 @@ public class SignUp extends AppCompatActivity {
     private void subscribeToFCM() {
         FirebaseMessaging.getInstance().subscribeToTopic("chatroom");
         if(sharedPreferences.getString("acc_type","").equals("student")){
-            FirebaseMessaging.getInstance().subscribeToTopic("task_"+sharedPreferences.getString("college","").replaceAll(" ","_"));
+            FirebaseMessaging.getInstance().subscribeToTopic("task_"+sharedPreferences.getString("college","").replaceAll(" ","_").replaceAll("'",""));
         }
         Intent i = new Intent(context,HomePage.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
