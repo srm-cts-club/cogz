@@ -77,7 +77,6 @@ public class SignUp extends AppCompatActivity {
             pb.setIndeterminate(true);
             pb.setVisibility(View.VISIBLE);
             // todo: validate data - password length, all fields filled?
-            // todo: delete account if signup failed
             JSONObject jsonObject = new JSONObject();
             errormsg.setVisibility(View.GONE);
             JSONObject data = new JSONObject();
@@ -209,9 +208,7 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onError(ANError error) {
 
-                            pb.setVisibility(View.GONE);
-                            pb.setIndeterminate(false);
-                            signup.setVisibility(View.VISIBLE);
+                            deleteUser();
                             int errCode = error.getErrorCode();
                             if (errCode == 401) {
                                 errormsg.setText("Unauthorised mentor key !");
@@ -264,11 +261,9 @@ public class SignUp extends AppCompatActivity {
 
                         @Override
                         public void onError(ANError error) {
-                            pb.setVisibility(View.GONE);
-                            pb.setIndeterminate(false);
-                            signup.setVisibility(View.VISIBLE);
-                                errormsg.setText("Couldn't sign up, Please try again");
-                                errormsg.setVisibility(View.VISIBLE);
+                            deleteUser();
+                            errormsg.setText("Couldn't sign up, Please try again");
+                            errormsg.setVisibility(View.VISIBLE);
                             // handle error
                         }
                     });
@@ -289,7 +284,12 @@ public class SignUp extends AppCompatActivity {
             args.put("table","users");
             object.put("id",sharedPreferences.getInt("hasura_id",0));
             object.put("name",name.getText().toString());
-            object.put("college",textViewCollege.getText().toString());
+            if(isMentor){
+                object.put("college",textViewDomain.getText().toString());
+            }
+            else {
+                object.put("college", textViewCollege.getText().toString());
+            }
             object.put("fcm_id", FirebaseInstanceId.getInstance().getToken());
             JSONArray arr = new JSONArray();
             arr.put(object);
@@ -311,9 +311,7 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onError(ANError error) {
 
-                            pb.setVisibility(View.GONE);
-                            pb.setIndeterminate(false);
-                            signup.setVisibility(View.VISIBLE);
+                            deleteUser();
                             int errCode = error.getErrorCode();
                             Log.d("Signup - updateother","Error code = "+errCode+ " Error details = "+error.getErrorBody());
                             if (errCode == 400) {
@@ -339,5 +337,36 @@ public class SignUp extends AppCompatActivity {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(i);
+    }
+
+    private void deleteUser(){
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userid", sharedPreferences.getInt("hasura_id",0));
+            AndroidNetworking.post("https://api." + getString(R.string.cluster_name) + ".hasura-app.io/user/delete")
+                    .addJSONObjectBody(jsonObject)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            pb.setVisibility(View.GONE);
+                            pb.setIndeterminate(false);
+                            signup.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            pb.setVisibility(View.GONE);
+                            pb.setIndeterminate(false);
+                            signup.setVisibility(View.VISIBLE);
+                            // handle error
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }
