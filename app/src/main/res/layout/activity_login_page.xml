@@ -10,7 +10,8 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/editText_username"
@@ -18,11 +19,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="Enter username"
         android:textColor="#A9A9A9"
         android:visibility="visible"
+        android:background="@drawable/edittext_rounded_corners"
 
         />
 
@@ -33,12 +35,13 @@
         android:layout_alignStart="@+id/editText_username"
         android:layout_below="@+id/editText_username"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="#A9A9A9"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:background="@drawable/edittext_rounded_corners"/>
 
     <Button
         android:id="@+id/button_login"
@@ -49,7 +52,8 @@
         android:layout_marginTop="26dp"
         android:background="#7f7fff"
         android:text="Log In"
-        android:textColor="#FFF" />
+        android:textColor="#FFF"
+        />
 
 
     <TextView
