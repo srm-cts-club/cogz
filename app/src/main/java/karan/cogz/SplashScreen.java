@@ -45,7 +45,7 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onError(ANError error) {
                         // failure
-                        Intent fail = new Intent(context,SignUp.class);// for trial
+                        Intent fail = new Intent(context,LoginPage.class);// for trial
                         startActivity(fail);
                         finish();
                     }
