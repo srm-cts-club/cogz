@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -88,14 +89,21 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void signup() {
-        register.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent("karan.SignUp");
-                        startActivity(i);
+        try {
+            register.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent i = new Intent("karan.cogz.SignUp");
+                            startActivity(i);
+                        }
                     }
-                }
-        );
+            );
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(this, ""+e , Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
