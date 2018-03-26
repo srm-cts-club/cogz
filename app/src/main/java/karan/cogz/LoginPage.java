@@ -17,6 +17,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,7 +72,13 @@ public class LoginPage extends AppCompatActivity {
                                 editor.putString("token", response.getString("auth_token"));
                                 editor.putString("username", response.getString("username"));
                                 editor.putInt("hasura_id", response.getInt("hasura_id"));
-                                editor.putString("acc_type", "student");
+                                JSONArray roles = response.getJSONArray("hasura_roles");
+                                if(roles.length()==2 && roles.getString(1).equals("cts")){
+                                    editor.putString("acc_type", "mentor");
+                                }
+                                else {
+                                    editor.putString("acc_type", "student");
+                                }
                                 editor.commit();
                                 Intent intent = new Intent(context, HomePage.class);
                                 context.startActivity(intent);
@@ -120,6 +127,7 @@ public class LoginPage extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(context, SignUp.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(i);
                     }
                 }

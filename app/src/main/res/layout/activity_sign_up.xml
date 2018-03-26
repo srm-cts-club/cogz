@@ -159,7 +159,7 @@
                 android:id="@+id/error_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pass2"
+                android:layout_below="@+id/adminKey"
                 android:layout_centerHorizontal="true"
                 android:paddingTop="10dp"
                 android:text="Error"
