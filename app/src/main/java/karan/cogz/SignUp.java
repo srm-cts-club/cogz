@@ -181,7 +181,7 @@ public class SignUp extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("mentor_secret", admin_key.getText().toString());
             jsonObject.put("userid", sharedPreferences.getInt("hasura_id",0));
-            AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/login")
+            AndroidNetworking.post("https://api." + getString(R.string.cluster_name) + ".hasura-app.io/mentor/addmentor")
                     .addJSONObjectBody(jsonObject)
                     .setPriority(Priority.MEDIUM)
                     .build()
