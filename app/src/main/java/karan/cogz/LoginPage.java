@@ -73,7 +73,7 @@ public class LoginPage extends AppCompatActivity {
                                 editor.putInt("hasura_id", response.getInt("hasura_id"));
                                 editor.putString("acc_type", "student");
                                 editor.commit();
-                                Intent intent = new Intent(context,HomePage.class);
+                                Intent intent = new Intent(context, HomePage.class);
                                 context.startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();

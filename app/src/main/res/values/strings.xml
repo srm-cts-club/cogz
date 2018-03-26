@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">CogZ</string>
     <string name="cluster_name">cattily94</string>
+    <string name="app_name1">Home Page</string>
+    <string name="tab_text_1">Updates</string>
+    <string name="tab_text_2">Tasks</string>
+    <string name="tab_text_3">Chatroom</string>
+    <string name="profile_name"> Profile</string>
+    <string name="logout"> Log out</string>
+    <string name="about">About </string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format"> </string>string>
 </resources>
