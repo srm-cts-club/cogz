@@ -152,9 +152,20 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/edittext_rounded_corners"
                 android:ems="10"
-                android:hint="Enter Admin Key"
+                android:hint="Mentor Key"
                 android:inputType="textPassword"
                 android:textColor="#A9A9A9"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/error_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pass2"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="10dp"
+                android:text="Error"
+                android:textColor="@android:color/holo_red_dark"
                 android:visibility="gone" />
 
             <Button

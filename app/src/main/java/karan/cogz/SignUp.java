@@ -36,6 +36,8 @@ public class SignUp extends AppCompatActivity {
     EditText admin_key;
     AutoCompleteTextView textViewCollege;
     AutoCompleteTextView textViewDomain;
+    TextView errormsg;
+    EditText name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,8 @@ public class SignUp extends AppCompatActivity {
         admin_key = (EditText) findViewById(R.id.adminKey);
         textViewCollege = findViewById(R.id.autoComplete_college);
         textViewDomain = findViewById(R.id.autoComplete_domain);
-
+        errormsg = findViewById(R.id.error_msg);
+        name = findViewById(R.id.name);
         setViewOnclickListeners();
 
         sign_up();
@@ -64,6 +67,9 @@ public class SignUp extends AppCompatActivity {
 
     public void sign_up() {
         try {
+            errormsg.setVisibility(View.GONE);
+            // todo: validate data - password length, all fields filled?
+            // todo: delete account if signup failed
             JSONObject jsonObject = new JSONObject();
             JSONObject data = new JSONObject();
             data.put("username", username.getText().toString());
@@ -83,12 +89,12 @@ public class SignUp extends AppCompatActivity {
                                 editor.putString("username", response.getString("username"));
                                 editor.putInt("hasura_id", response.getInt("hasura_id"));
                                 editor.putString("acc_type", "student");
+                                editor.commit();
                                 if (!isMentor) {
-                                    // todo: update other data
+                                    updateOtherData();
                                     // todo: redirect to chat screen
                                 } else {
-                                    //todo: perform acc upgrade request
-                                    // todo: update other data
+                                    upgradeAcc();
                                     // todo: redirect to chat screen
                                 }
                             } catch (JSONException e) {
@@ -100,7 +106,26 @@ public class SignUp extends AppCompatActivity {
                         public void onError(ANError error) {
                             int errCode = error.getErrorCode();
                             if (errCode == 400) {
-                                //most likely username already exist, check error body to confirm
+                                JSONObject errBody = null;
+                                try {
+                                    errBody = new JSONObject(error.getErrorBody());
+                                    if(errBody.getString("message").equals("This user already exists")){
+                                        errormsg.setText("Username already taken");
+                                        errormsg.setVisibility(View.VISIBLE);
+                                    }
+                                    else{
+                                        errormsg.setText("Couldn't sign up, Please try again");
+                                        errormsg.setVisibility(View.VISIBLE);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    errormsg.setText("Couldn't sign up, Please try again");
+                                    errormsg.setVisibility(View.VISIBLE);
+                                }
+                            }
+                            else{
+                                errormsg.setText("Couldn't sign up, Please try again");
+                                errormsg.setVisibility(View.VISIBLE);
                             }
 
                             // handle error
@@ -110,7 +135,7 @@ public class SignUp extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void setViewOnclickListeners(){
+    private void setViewOnclickListeners(){
         select_mentor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -150,5 +175,47 @@ public class SignUp extends AppCompatActivity {
         String[] arrayD = {"HC NA", "LS", "BFS", "BFS-TAO", "AVM CommsMedia", "AVM Ismo", "AVM EAS", "RCGTH", "P&R","MLEU P&R"};
         ArrayAdapter<String> adapterD = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, arrayD);
         textViewDomain.setAdapter(adapterD);
+    }
+    private void upgradeAcc() {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("mentor_secret", admin_key.getText().toString());
+            jsonObject.put("userid", sharedPreferences.getInt("hasura_id",0));
+            AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/login")
+                    .addJSONObjectBody(jsonObject)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            editor.putString("acc_type", "mentor");
+                            editor.commit();
+                            updateOtherData();
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            int errCode = error.getErrorCode();
+                            if (errCode == 400) {
+                                errormsg.setText("Couldn't sign up, Please try again");
+                                errormsg.setVisibility(View.VISIBLE);
+                            } else {
+                                errormsg.setText("Couldn't sign up, Please try again");
+                                errormsg.setVisibility(View.VISIBLE);
+                            }
+                            // handle error
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void updateOtherData(){
+        editor.putString("name",name.getText().toString());
+        editor.putString("college", textViewCollege.getText().toString());
+        editor.commit();
+
     }
 }

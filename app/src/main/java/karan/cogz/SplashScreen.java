@@ -37,19 +37,17 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // success
-                        Intent success = new Intent("karan.cogz.SignUp"); //for trial
+                        Intent success = new Intent(context,HomePage.class); //for trial
                         startActivity(success);
-
+                        finish();
                     }
 
                     @Override
                     public void onError(ANError error) {
                         // failure
-
-                        Intent fail = new Intent("karan.cogz.LoginPage");// for trial
+                        Intent fail = new Intent(context,SignUp.class);// for trial
                         startActivity(fail);
-
-
+                        finish();
                     }
                 });
 

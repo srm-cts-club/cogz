@@ -72,6 +72,7 @@ public class LoginPage extends AppCompatActivity {
                                 editor.putString("username", response.getString("username"));
                                 editor.putInt("hasura_id", response.getInt("hasura_id"));
                                 editor.putString("acc_type", "student");
+                                editor.commit();
                                 Intent intent = new Intent(context,HomePage.class);
                                 context.startActivity(intent);
                             } catch (JSONException e) {
@@ -96,6 +97,8 @@ public class LoginPage extends AppCompatActivity {
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    err_msg.setText("Unable to login, Please try again");
+                                    err_msg.setVisibility(View.VISIBLE);
                                 }
 
                                 //most likely username already exist, check error body to confirm
