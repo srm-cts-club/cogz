@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +11,13 @@
     tools:context="karan.cogz.SignUp">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_above="@+id/ll_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/name"
-                android:layout_below="@+id/signUp" />
+                android:layout_below="@+id/signUp"
+                android:checked="false" />
 
             <TextView
                 android:id="@+id/checkAdmin"
@@ -50,12 +56,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/button_sign_up"
                 android:layout_below="@+id/checkBox"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edittext_rounded_corners"
                 android:ems="10"
-                android:hint="Enter Name"
+                android:hint="Name"
                 android:textColor="#A9A9A9"
-                android:visibility="visible"
-                android:background="@drawable/edittext_rounded_corners"/>
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/userName"
@@ -64,12 +70,12 @@
                 android:layout_alignStart="@+id/name"
                 android:layout_below="@+id/name"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edittext_rounded_corners"
                 android:ems="10"
-                android:hint="Enter Username"
+                android:hint="Username"
                 android:textColor="#A9A9A9"
-                android:visibility="visible"
-                android:background="@drawable/edittext_rounded_corners"/>
+                android:visibility="visible" />
 
 
             <AutoCompleteTextView
@@ -79,12 +85,31 @@
                 android:layout_alignStart="@+id/userName"
                 android:layout_below="@+id/userName"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edittext_rounded_corners"
+                android:completionThreshold="1"
                 android:ems="10"
-                android:hint="Enter College Name"
+                android:hint="College Name"
                 android:textColor="#A9A9A9"
-                android:visibility="visible"
-                android:background="@drawable/edittext_rounded_corners"/>
+                android:visibility="visible" />
+
+
+
+
+            <AutoCompleteTextView
+                android:id="@+id/autoComplete_domain"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/userName"
+                android:layout_below="@+id/userName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edittext_rounded_corners"
+                android:completionThreshold="1"
+                android:ems="10"
+                android:hint="Domain"
+                android:textColor="#A9A9A9"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/pass1"
@@ -93,14 +118,14 @@
                 android:layout_alignStart="@+id/autoComplete_college"
                 android:layout_below="@+id/autoComplete_college"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edittext_rounded_corners"
                 android:ems="10"
-                android:hint="Enter Password (min 6 characters)"
+                android:hint="Password (min 6 characters)"
                 android:inputType="textPassword"
                 android:minEms="6"
                 android:textColor="#A9A9A9"
-                android:visibility="visible"
-                android:background="@drawable/edittext_rounded_corners"/>
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/pass2"
@@ -109,13 +134,13 @@
                 android:layout_alignStart="@+id/pass1"
                 android:layout_below="@+id/pass1"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edittext_rounded_corners"
                 android:ems="10"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
                 android:textColor="#A9A9A9"
-                android:visibility="visible"
-                android:background="@drawable/edittext_rounded_corners"/>
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/adminKey"
@@ -125,12 +150,12 @@
                 android:layout_below="@+id/pass2"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_rounded_corners"
                 android:ems="10"
                 android:hint="Enter Admin Key"
                 android:inputType="textPassword"
                 android:textColor="#A9A9A9"
-                android:visibility="gone"
-                android:background="@drawable/edittext_rounded_corners"/>
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/button_sign_up"
@@ -149,4 +174,41 @@
     </ScrollView>
 
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">>
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="Already have an account? " />
+
+        <TextView
+            android:id="@+id/text_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text3"
+            android:layout_alignBottom="@+id/text3"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/text3"
+            android:layout_weight="1"
+            android:text="Sign In"
+            android:textColor="#4cb3cf"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="5dp" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
