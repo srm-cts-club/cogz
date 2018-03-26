@@ -154,6 +154,7 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(context, LoginPage.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(i);
                     }
                 }
