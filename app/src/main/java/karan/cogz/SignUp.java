@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -74,6 +75,7 @@ public class SignUp extends AppCompatActivity {
             // todo: progressbar
             // todo: fix signup even with wrong mentor_key
             JSONObject jsonObject = new JSONObject();
+            errormsg.setVisibility(View.GONE);
             JSONObject data = new JSONObject();
             data.put("username", username.getText().toString());
             data.put("password", password.getText().toString());
@@ -140,6 +142,7 @@ public class SignUp extends AppCompatActivity {
         select_mentor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isMentor = isChecked;
                 if (isChecked) {
                     admin_key.setVisibility(View.VISIBLE);
                     textViewCollege.setVisibility(View.GONE);
@@ -183,7 +186,7 @@ public class SignUp extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("mentor_secret", admin_key.getText().toString());
             jsonObject.put("userid", sharedPreferences.getInt("hasura_id",0));
-            AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/login")
+            AndroidNetworking.post("https://api." + getString(R.string.cluster_name) + ".hasura-app.io/mentor/addmentor")
                     .addJSONObjectBody(jsonObject)
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -193,19 +196,65 @@ public class SignUp extends AppCompatActivity {
                             // do anything with response
                             editor.putString("acc_type", "mentor");
                             editor.commit();
-                            updateOtherData();
+                            relogin();
                         }
 
                         @Override
                         public void onError(ANError error) {
                             int errCode = error.getErrorCode();
-                            if (errCode == 400) {
-                                errormsg.setText("Couldn't sign up, Please try again");
+                            if (errCode == 401) {
+                                errormsg.setText("Unauthorised mentor key !");
                                 errormsg.setVisibility(View.VISIBLE);
                             } else {
+                                Log.d("Signup","upgrade error "+errCode);
                                 errormsg.setText("Couldn't sign up, Please try again");
                                 errormsg.setVisibility(View.VISIBLE);
                             }
+                            // handle error
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void relogin(){
+        try {
+            JSONObject jsonObject = new JSONObject();
+            JSONObject data = new JSONObject();
+            data.put("username", username.getText().toString());
+            data.put("password", password.getText().toString());
+            jsonObject.put("provider", "username");
+            jsonObject.put("data", data);
+            AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/login")
+                    .addJSONObjectBody(jsonObject)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            try {
+                                editor.putString("token", response.getString("auth_token"));
+                                editor.putString("username", response.getString("username"));
+                                editor.putInt("hasura_id", response.getInt("hasura_id"));
+                                JSONArray roles = response.getJSONArray("hasura_roles");
+                                if(roles.length()==2 && roles.getString(1).equals("cts")){
+                                    editor.putString("acc_type", "mentor");
+                                }
+                                else {
+                                    editor.putString("acc_type", "student");
+                                }
+                                editor.commit();
+                                updateOtherData();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                                errormsg.setText("Couldn't sign up, Please try again");
+                                errormsg.setVisibility(View.VISIBLE);
                             // handle error
                         }
                     });
@@ -248,6 +297,7 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onError(ANError error) {
                             int errCode = error.getErrorCode();
+                            Log.d("Signup - updateother","Error code = "+errCode+ " Error details = "+error.getErrorBody());
                             if (errCode == 400) {
                                 errormsg.setText("Couldn't sign up, Please try again");
                                 errormsg.setVisibility(View.VISIBLE);
