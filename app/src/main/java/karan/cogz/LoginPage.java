@@ -80,7 +80,9 @@ public class LoginPage extends AppCompatActivity {
                                     editor.putString("acc_type", "student");
                                 }
                                 editor.commit();
-                                Intent intent = new Intent(context, HomePage.class);
+                                Intent intent = new Intent(context,HomePage.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 context.startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();

@@ -18,7 +18,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,6 +71,8 @@ public class SignUp extends AppCompatActivity {
             errormsg.setVisibility(View.GONE);
             // todo: validate data - password length, all fields filled?
             // todo: delete account if signup failed
+            // todo: progressbar
+            // todo: fix signup even with wrong mentor_key
             JSONObject jsonObject = new JSONObject();
             JSONObject data = new JSONObject();
             data.put("username", username.getText().toString());
@@ -90,10 +95,8 @@ public class SignUp extends AppCompatActivity {
                                 editor.commit();
                                 if (!isMentor) {
                                     updateOtherData();
-                                    // todo: redirect to chat screen
                                 } else {
                                     upgradeAcc();
-                                    // todo: redirect to chat screen
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -214,6 +217,59 @@ public class SignUp extends AppCompatActivity {
         editor.putString("name",name.getText().toString());
         editor.putString("college", textViewCollege.getText().toString());
         editor.commit();
+        try {
 
+            JSONObject jsonObject = new JSONObject();
+            JSONObject args = new JSONObject();
+            JSONObject object = new JSONObject();
+            jsonObject.put("type", "insert");
+            args.put("table","users");
+            object.put("id",sharedPreferences.getInt("hasura_id",0));
+            object.put("name",name.getText().toString());
+            object.put("college",textViewCollege.getText().toString());
+            object.put("fcm_id", FirebaseInstanceId.getInstance().getToken());
+            JSONArray arr = new JSONArray();
+            arr.put(object);
+            args.put("objects",arr);
+            jsonObject.put("args",args);
+            AndroidNetworking.post("https://data." + getString(R.string.cluster_name) + ".hasura-app.io/v1/query")
+                    .addHeaders("Content-Type","application/json")
+                    .addHeaders("Authorization","Bearer "+sharedPreferences.getString("token",""))
+                    .addJSONObjectBody(jsonObject)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            subscribeToFCM();
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            int errCode = error.getErrorCode();
+                            if (errCode == 400) {
+                                errormsg.setText("Couldn't sign up, Please try again");
+                                errormsg.setVisibility(View.VISIBLE);
+                            } else {
+                                errormsg.setText("Couldn't sign up, Please try again");
+                                errormsg.setVisibility(View.VISIBLE);
+                            }
+                            // handle error
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void subscribeToFCM() {
+        FirebaseMessaging.getInstance().subscribeToTopic("chatroom");
+        if(sharedPreferences.getString("acc_type","").equals("student")){
+            FirebaseMessaging.getInstance().subscribeToTopic("task_"+sharedPreferences.getString("college","").replaceAll(" ","_"));
+        }
+        Intent i = new Intent(context,HomePage.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(i);
     }
 }

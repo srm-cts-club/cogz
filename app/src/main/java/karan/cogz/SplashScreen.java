@@ -8,13 +8,16 @@ import android.preference.PreferenceManager;
 import android.renderscript.RenderScript;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -36,9 +39,9 @@ public class SplashScreen extends AppCompatActivity {
                 .addHeaders(getRequestHeader())
                 .setPriority(Priority.MEDIUM)
                 .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         // success
                         Date end = new Date();
                         if(end.getTime()-start.getTime()>2000) {
@@ -62,6 +65,7 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onError(ANError error) {
                         // failure
+                        Log.d("Splash",error.getErrorDetail());
                         Date end = new Date();
                         if(end.getTime()-start.getTime()>2000) {
                             Intent fail = new Intent(context,LoginPage.class);// for trial
