@@ -94,14 +94,12 @@
                 android:visibility="visible" />
 
 
-
-
             <AutoCompleteTextView
                 android:id="@+id/autoComplete_domain"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/userName"
-                android:layout_below="@+id/userName"
+                android:layout_below="@+id/autoComplete_college"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/edittext_rounded_corners"
@@ -116,7 +114,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/autoComplete_college"
-                android:layout_below="@+id/autoComplete_college"
+                android:layout_below="@+id/autoComplete_domain"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/edittext_rounded_corners"

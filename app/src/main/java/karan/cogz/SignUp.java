@@ -50,8 +50,8 @@ public class SignUp extends AppCompatActivity {
 
         AndroidNetworking.initialize(getApplicationContext());
 
-        username = (EditText) findViewById(R.id.editText_username);
-        password = (EditText) findViewById(R.id.editText_password);
+        username = (EditText) findViewById(R.id.userName);
+        password = (EditText) findViewById(R.id.pass1);
         login = findViewById(R.id.text_login);
         signup = (Button) findViewById(R.id.button_sign_up);
         select_mentor = (CheckBox) findViewById(R.id.checkBox);
@@ -61,8 +61,6 @@ public class SignUp extends AppCompatActivity {
         errormsg = findViewById(R.id.error_msg);
         name = findViewById(R.id.name);
         setViewOnclickListeners();
-
-        sign_up();
     }
 
     public void sign_up() {
