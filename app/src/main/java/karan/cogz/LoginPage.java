@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class LoginPage extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Context context;
+    ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,15 @@ public class LoginPage extends AppCompatActivity {
         login = (Button) findViewById(R.id.button_login);
         register = (TextView) findViewById(R.id.text_register);
         err_msg = findViewById(R.id.error_msg);
-
+        pb = findViewById(R.id.progressBar2);
         setViewOnclickListeners();
     }
 
     public void login() {
         try {
+            login.setVisibility(View.GONE);
+            pb.setIndeterminate(true);
+            pb.setVisibility(View.VISIBLE);
             err_msg.setVisibility(View.GONE);
             JSONObject jsonObject = new JSONObject();
             JSONObject data = new JSONObject();
@@ -91,6 +96,8 @@ public class LoginPage extends AppCompatActivity {
                         @Override
                         public void onError(ANError error) {
                             int errCode = error.getErrorCode();
+                            pb.setVisibility(View.GONE);
+                            login.setVisibility(View.VISIBLE);
                             if (errCode == 400) {
                                 try {
                                     JSONObject errorbody = new JSONObject(error.getErrorBody());
