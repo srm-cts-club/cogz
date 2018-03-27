@@ -91,8 +91,8 @@ public class HomePage extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.Profileid) {
-           /* Intent profileIntent = new Intent(context, ProfilePage.class);
-            startActivity(profileIntent);*/
+            Intent profileIntent = new Intent(context, ProfilePage.class);
+            startActivity(profileIntent);
         } else if (id == R.id.Logoutid) {
             logout();
 

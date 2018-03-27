@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="karan.cogz.AboutPage">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/textView_about"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="88dp"
+                android:text="CogZ is designed to serve the purpose of inter-communication between the team members  and the mentors at CTS Student Club."
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/textView_about2"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/textView_about"
+                android:layout_marginTop="20dp"
+                android:text="About CogZ"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textView_about3"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignStart="@id/textView_about"
+                android:layout_below="@id/textView_about"
+                android:layout_marginTop="20dp"
+                android:text="Developed by:"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textView_about4"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignStart="@id/textView_about"
+                android:layout_below="@id/textView_about3"
+                android:layout_marginTop="15dp"
+                android:text="SRM IST CTS Club members:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_about5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/textView_about"
+                android:layout_below="@id/textView_about4"
+                android:layout_marginTop="15dp"
+                android:text="1. Nithesh P\n2.Karan Matalia\n3.Akshay Samrat\n4.Shivam Patel\n5.Pranati R.\n6.Niharika Bansal\n7.Sidharth Nepak\n8.Bishwaroop Bhattacharjee\n9.Astha"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

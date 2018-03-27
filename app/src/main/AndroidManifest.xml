@@ -51,7 +51,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomePage"
+        <activity
+            android:name=".HomePage"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="karan.cogz.HomePage" />
@@ -59,7 +60,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".AboutPage"></activity>
+        <activity android:name=".AboutPage" />
+        <activity android:name=".ProfilePage"></activity>
     </application>
 
 </manifest>
