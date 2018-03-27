@@ -44,12 +44,11 @@ public class SplashScreen extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         // success
                         Date end = new Date();
-                        if(end.getTime()-start.getTime()>2000) {
+                        if (end.getTime() - start.getTime() > 2000) {
                             Intent success = new Intent(context, HomePage.class); //for trial
                             startActivity(success);
                             finish();
-                        }
-                        else{
+                        } else {
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -58,30 +57,29 @@ public class SplashScreen extends AppCompatActivity {
                                     startActivity(success);
                                     finish();
                                 }
-                            },2000-(end.getTime()-start.getTime()));
+                            }, 2000 - (end.getTime() - start.getTime()));
                         }
                     }
 
                     @Override
                     public void onError(ANError error) {
                         // failure
-                        Log.d("Splash",error.getErrorDetail());
+                        Log.d("Splash", error.getErrorDetail());
                         Date end = new Date();
-                        if(end.getTime()-start.getTime()>2000) {
-                            Intent fail = new Intent(context,LoginPage.class);// for trial
+                        if (end.getTime() - start.getTime() > 2000) {
+                            Intent fail = new Intent(context, LoginPage.class);// for trial
                             startActivity(fail);
                             finish();
-                        }
-                        else{
+                        } else {
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent fail = new Intent(context,LoginPage.class);// for trial
+                                    Intent fail = new Intent(context, LoginPage.class);// for trial
                                     startActivity(fail);
                                     finish();
                                 }
-                            },2000-(end.getTime()-start.getTime()));
+                            }, 2000 - (end.getTime() - start.getTime()));
                         }
                     }
                 });

@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -110,11 +111,10 @@ public class SignUp extends AppCompatActivity {
                                 JSONObject errBody = null;
                                 try {
                                     errBody = new JSONObject(error.getErrorBody());
-                                    if(errBody.getString("message").equals("This user already exists")){
+                                    if (errBody.getString("message").equals("This user already exists")) {
                                         errormsg.setText("Username already taken");
                                         errormsg.setVisibility(View.VISIBLE);
-                                    }
-                                    else{
+                                    } else {
                                         errormsg.setText("Couldn't sign up, Please try again");
                                         errormsg.setVisibility(View.VISIBLE);
                                     }
@@ -123,8 +123,7 @@ public class SignUp extends AppCompatActivity {
                                     errormsg.setText("Couldn't sign up, Please try again");
                                     errormsg.setVisibility(View.VISIBLE);
                                 }
-                            }
-                            else{
+                            } else {
                                 errormsg.setText("Couldn't sign up, Please try again");
                                 errormsg.setVisibility(View.VISIBLE);
                             }
@@ -136,7 +135,8 @@ public class SignUp extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void setViewOnclickListeners(){
+
+    private void setViewOnclickListeners() {
         select_mentor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -165,24 +165,25 @@ public class SignUp extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                       sign_up();
+                        sign_up();
                     }
                 }
         );
-        String[] arrayC = {"SSN", "RMK", "RMD", "Velammal Engineering College", "Sathyabama", "St.Joseph's Institute of Technology", "RMKCET", "SRM University", "Velammal institute of Technology","B.S.Abdur Rahman Institute of Science and Technology", "Sri Venkateswara College of Engineering","Meenakshi Sundararajan College","St.Joseph's College of Engineering","VIT Chennai","IIT Madras"};
-        ArrayAdapter<String> adapterC = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, arrayC);
+        String[] arrayC = {"SSN", "RMK", "RMD", "Velammal Engineering College", "Sathyabama", "St.Joseph's Institute of Technology", "RMKCET", "SRM University", "Velammal institute of Technology", "B.S.Abdur Rahman Institute of Science and Technology", "Sri Venkateswara College of Engineering", "Meenakshi Sundararajan College", "St.Joseph's College of Engineering", "VIT Chennai", "IIT Madras"};
+        ArrayAdapter<String> adapterC = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayC);
         textViewCollege.setAdapter(adapterC);
 
-        String[] arrayD = {"HC NA", "LS", "BFS", "BFS-TAO", "AVM CommsMedia", "AVM Ismo", "AVM EAS", "RCGTH", "P&R","MLEU P&R"};
-        ArrayAdapter<String> adapterD = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, arrayD);
+        String[] arrayD = {"HC NA", "LS", "BFS", "BFS-TAO", "AVM CommsMedia", "AVM Ismo", "AVM EAS", "RCGTH", "P&R", "MLEU P&R"};
+        ArrayAdapter<String> adapterD = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayD);
         textViewDomain.setAdapter(adapterD);
     }
+
     private void upgradeAcc() {
         try {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("mentor_secret", admin_key.getText().toString());
-            jsonObject.put("userid", sharedPreferences.getInt("hasura_id",0));
+            jsonObject.put("userid", sharedPreferences.getInt("hasura_id", 0));
             AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/login")
                     .addJSONObjectBody(jsonObject)
                     .setPriority(Priority.MEDIUM)
@@ -213,8 +214,9 @@ public class SignUp extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void updateOtherData(){
-        editor.putString("name",name.getText().toString());
+
+    private void updateOtherData() {
+        editor.putString("name", name.getText().toString());
         editor.putString("college", textViewCollege.getText().toString());
         editor.commit();
         try {
@@ -223,18 +225,18 @@ public class SignUp extends AppCompatActivity {
             JSONObject args = new JSONObject();
             JSONObject object = new JSONObject();
             jsonObject.put("type", "insert");
-            args.put("table","users");
-            object.put("id",sharedPreferences.getInt("hasura_id",0));
-            object.put("name",name.getText().toString());
-            object.put("college",textViewCollege.getText().toString());
+            args.put("table", "users");
+            object.put("id", sharedPreferences.getInt("hasura_id", 0));
+            object.put("name", name.getText().toString());
+            object.put("college", textViewCollege.getText().toString());
             object.put("fcm_id", FirebaseInstanceId.getInstance().getToken());
             JSONArray arr = new JSONArray();
             arr.put(object);
-            args.put("objects",arr);
-            jsonObject.put("args",args);
+            args.put("objects", arr);
+            jsonObject.put("args", args);
             AndroidNetworking.post("https://data." + getString(R.string.cluster_name) + ".hasura-app.io/v1/query")
-                    .addHeaders("Content-Type","application/json")
-                    .addHeaders("Authorization","Bearer "+sharedPreferences.getString("token",""))
+                    .addHeaders("Content-Type", "application/json")
+                    .addHeaders("Authorization", "Bearer " + sharedPreferences.getString("token", ""))
                     .addJSONObjectBody(jsonObject)
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -262,12 +264,13 @@ public class SignUp extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void subscribeToFCM() {
         FirebaseMessaging.getInstance().subscribeToTopic("chatroom");
-        if(sharedPreferences.getString("acc_type","").equals("student")){
-            FirebaseMessaging.getInstance().subscribeToTopic("task_"+sharedPreferences.getString("college","").replaceAll(" ","_"));
+        if (sharedPreferences.getString("acc_type", "").equals("student")) {
+            FirebaseMessaging.getInstance().subscribeToTopic("task_" + sharedPreferences.getString("college", "").replaceAll(" ", "_"));
         }
-        Intent i = new Intent(context,HomePage.class);
+        Intent i = new Intent(context, HomePage.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(i);

@@ -1,5 +1,7 @@
 package karan.cogz;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,6 +37,7 @@ public class HomePage extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class HomePage extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        context = this;
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -75,6 +79,15 @@ public class HomePage extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.Profileid) {
+           /* Intent profileIntent = new Intent(context, ProfilePage.class);
+            startActivity(profileIntent);*/
+        } else if (id == R.id.Logoutid) {
+
+        } else if (id == R.id.Aboutid) {
+            Intent aboutIntent = new Intent(context, AboutPage.class);
+            startActivity(aboutIntent);
+        }
 
 
         return super.onOptionsItemSelected(item);

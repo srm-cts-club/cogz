@@ -73,14 +73,13 @@ public class LoginPage extends AppCompatActivity {
                                 editor.putString("username", response.getString("username"));
                                 editor.putInt("hasura_id", response.getInt("hasura_id"));
                                 JSONArray roles = response.getJSONArray("hasura_roles");
-                                if(roles.length()==2 && roles.getString(1).equals("cts")){
+                                if (roles.length() == 2 && roles.getString(1).equals("cts")) {
                                     editor.putString("acc_type", "mentor");
-                                }
-                                else {
+                                } else {
                                     editor.putString("acc_type", "student");
                                 }
                                 editor.commit();
-                                Intent intent = new Intent(context,HomePage.class);
+                                Intent intent = new Intent(context, HomePage.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 context.startActivity(intent);

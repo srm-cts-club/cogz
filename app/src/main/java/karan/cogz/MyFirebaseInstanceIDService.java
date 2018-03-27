@@ -21,6 +21,7 @@ import org.json.JSONObject;
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     public MyFirebaseInstanceIDService() {
     }
+
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
@@ -31,7 +32,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Instance ID token to your app server.
         sendRegistrationToServer(refreshedToken);
     }
-    private void sendRegistrationToServer(String token){
+
+    private void sendRegistrationToServer(String token) {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             JSONObject jsonObject = new JSONObject();
@@ -39,15 +41,15 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             JSONObject where = new JSONObject();
             JSONObject set = new JSONObject();
             jsonObject.put("type", "update");
-            args.put("table","users");
-            where.put("$eq",sharedPreferences.getInt("hasura_id",0));
-            set.put("fcm_id",token);
-            args.put("where",where);
-            args.put("$set",set);
-            jsonObject.put("args",args);
+            args.put("table", "users");
+            where.put("$eq", sharedPreferences.getInt("hasura_id", 0));
+            set.put("fcm_id", token);
+            args.put("where", where);
+            args.put("$set", set);
+            jsonObject.put("args", args);
             AndroidNetworking.post("https://data." + getString(R.string.cluster_name) + ".hasura-app.io/v1/query")
-                    .addHeaders("Content-Type","application/json")
-                    .addHeaders("Authorization","Bearer "+sharedPreferences.getString("token",""))
+                    .addHeaders("Content-Type", "application/json")
+                    .addHeaders("Authorization", "Bearer " + sharedPreferences.getString("token", ""))
                     .addJSONObjectBody(jsonObject)
                     .setPriority(Priority.MEDIUM)
                     .build()
