@@ -1,5 +1,9 @@
 package karan.cogz;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HomePage extends AppCompatActivity {
 
@@ -29,12 +43,17 @@ public class HomePage extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +64,10 @@ public class HomePage extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        context = this;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = sharedPreferences.edit();
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -75,6 +98,16 @@ public class HomePage extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.Profileid) {
+           /* Intent profileIntent = new Intent(context, ProfilePage.class);
+            startActivity(profileIntent);*/
+        } else if (id == R.id.Logoutid) {
+            logout();
+
+        } else if (id == R.id.Aboutid) {
+            Intent aboutIntent = new Intent(context, AboutPage.class);
+            startActivity(aboutIntent);
+        }
 
 
         return super.onOptionsItemSelected(item);
@@ -135,5 +168,32 @@ public class HomePage extends AppCompatActivity {
             // Show 3 total pages.
             return 3;
         }
+    }
+    private void logout(){
+        AndroidNetworking.post("https://auth." + getString(R.string.cluster_name) + ".hasura-app.io/v1/user/logout")
+                .addHeaders("Content-Type","application/json")
+                .addHeaders("Authorization","Bearer "+sharedPreferences.getString("token",""))
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        editor.putString("token", "");
+                        editor.commit();
+                        Intent intent = new Intent(context, LoginPage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        int errCode = error.getErrorCode();
+                        Toast.makeText(context,"Error logging out",Toast.LENGTH_SHORT);
+                    }
+
+                });
+
     }
 }
