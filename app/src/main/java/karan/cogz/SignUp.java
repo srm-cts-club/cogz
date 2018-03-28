@@ -278,6 +278,7 @@ public class SignUp extends AppCompatActivity {
     private void updateOtherData(){
         editor.putString("name",name.getText().toString());
         editor.putString("college", textViewCollege.getText().toString());
+        editor.putString("domain",textViewDomain.getText().toString());
         editor.commit();
         try {
 
