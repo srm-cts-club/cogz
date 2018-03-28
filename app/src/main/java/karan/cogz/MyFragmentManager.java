@@ -27,7 +27,7 @@ public class MyFragmentManager  extends FragmentPagerAdapter {
             //todo: change to tasks fragment
 
             Log.d("FRAGMENT","Fragment Tasks"+arg0);
-            return new Fragment();
+            return new TaskFragment();
         }
         else if(arg0 == 2){
             //todo: change to chatroom fragment
