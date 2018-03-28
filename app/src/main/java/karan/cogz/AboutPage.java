@@ -1,6 +1,7 @@
 package karan.cogz;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,11 +22,13 @@ public class AboutPage extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent email = new Intent(Intent.ACTION_SEND);
+                        Intent email = new Intent(Intent.ACTION_SENDTO);
+                        email.setType("message/rfc822");
                         email.putExtra(Intent.EXTRA_EMAIL, new String[]{"cts.srm@gmail.com"});
                         email.putExtra(Intent.EXTRA_SUBJECT, "subject");
                         email.putExtra(Intent.EXTRA_TEXT, "message");
-                        email.setType("message/rfc822");
+                        email.setData(Uri.parse("mailto:"));
+
                         startActivity(Intent.createChooser(email, "Choose an Email client :"));
                     }
                 }
