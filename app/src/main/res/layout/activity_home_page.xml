@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="#ffe3e7"
     tools:context="karan.cogz.HomePage">
 
     <android.support.design.widget.AppBarLayout
@@ -23,8 +24,10 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:visibility="visible"
+
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/app_name">
+            app:title="@string/app_name"
+            app:titleTextColor="#ffffff">
 
         </android.support.v7.widget.Toolbar>
 
@@ -32,7 +35,11 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            app:tabTextColor="#ffffff"
+            app:tabIndicatorColor="#ffffff"
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="#ffffff">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem"
@@ -58,11 +65,10 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="461dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />
-
 
 
 </android.support.constraint.ConstraintLayout>
