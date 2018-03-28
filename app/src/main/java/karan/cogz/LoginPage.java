@@ -17,6 +17,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,6 +86,11 @@ public class LoginPage extends AppCompatActivity {
                                     editor.putString("acc_type", "student");
                                 }
                                 editor.commit();
+                                FirebaseMessaging.getInstance().subscribeToTopic("chatroom");
+                                if(sharedPreferences.getString("acc_type","").equals("student")){
+                                    FirebaseMessaging.getInstance().subscribeToTopic("task_"+sharedPreferences.getString("college","").replaceAll(" ","_").replaceAll("'",""));
+                                }
+                                FirebaseMessaging.getInstance().subscribeToTopic("update");
                                 Intent intent = new Intent(context,HomePage.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

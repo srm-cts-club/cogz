@@ -337,6 +337,7 @@ public class SignUp extends AppCompatActivity {
         if(sharedPreferences.getString("acc_type","").equals("student")){
             FirebaseMessaging.getInstance().subscribeToTopic("task_"+sharedPreferences.getString("college","").replaceAll(" ","_").replaceAll("'",""));
         }
+        FirebaseMessaging.getInstance().subscribeToTopic("update");
         Intent i = new Intent(context,HomePage.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
