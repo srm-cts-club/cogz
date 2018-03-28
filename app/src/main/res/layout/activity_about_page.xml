@@ -63,7 +63,7 @@
                 android:layout_alignStart="@id/textView_about"
                 android:layout_below="@id/textView_about4"
                 android:layout_marginTop="10dp"
-                android:text="1. Nithesh P\n2.Karan Matalia\n3.Akshay Samrat\n4.Shivam Patel\n5.Pranati R.\n6.Niharika Bansal\n7.Sidharth Nepak\n8.Bishwaroop Bhattacharjee\n9.Astha"
+                android:text="1.Nithesh P\n2.Karan Matalia\n3.Akshay Samrat\n4.Pranati R.\n5.Niharika Bansal\n6.Siddharth S Nepak\n7.Bishwaroop Bhattacharjee\n8.Astha"
                 android:textSize="20sp" />
             <View
                 android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/button_about"
-                android:layout_alignStart="@id/textView_about"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/about_view"
                 android:text="Contact Us"
                 android:textSize="20dp"/>
